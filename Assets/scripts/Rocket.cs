@@ -2,16 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour {
 
     // Public
     public float rotateSpeed = 175f;
-    public float thrustSpeed = 50f;
+    public float thrustForce = 650f;
 
     // Serial
-    [Serializable]
-    private int fuel = 100;
+    [SerializeField]
+    private float maxFuel = 1000f;
+    private float fuel = 1000f;
+    private float baseMass = 1f;
 
     // Private
     private AudioSource engine;
@@ -26,6 +29,9 @@ public class Rocket : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        // We have to be constantly adjusting mass in order to get the 
+        // correct mass value based on the ever changing altitude of the rocket.
+        AdjustMass();
         if (gameObject)
         {
             // On space press, thrust.
@@ -39,7 +45,7 @@ public class Rocket : MonoBehaviour {
     {
         switch(collision.gameObject.tag) {
             case "Death":
-                Destroy(gameObject);
+                SceneManager.LoadScene("Level 1");
                 print("U dead");
                 break;
             default:
@@ -72,10 +78,17 @@ public class Rocket : MonoBehaviour {
     // Invoked in the Update method, handles the thrusting motion of the rocket.
     private void Thrust()
     {
-        if (Input.GetKey(KeyCode.Space))
+        // If they are pressing the space key and the rocket still has fuel, give it some gas.
+        if (Input.GetKey(KeyCode.Space) && fuel != 0f)
         {
-            float thrustForce = thrustSpeed * Time.deltaTime;
-            rigidBody.AddRelativeForce(Vector3.up * thrustForce);
+            // Decrement fuel
+            fuel--;
+            // Adjust the thrust force we've calculated by the delta time.
+            float adjustedThrustForce = thrustForce * Time.deltaTime;
+            // Add the adjusted force to our rocket
+            rigidBody.AddRelativeForce(Vector3.up * adjustedThrustForce);
+            // If the engine noise isn't playing already, play it.
+            // This prevents the layering of audio.
             if (!engine.isPlaying)
             {
                 engine.Play();
@@ -85,5 +98,39 @@ public class Rocket : MonoBehaviour {
         {
             engine.Stop();
         }
+    }
+
+    private void AdjustMass()
+    {
+
+        float normilizedFuelLevel = GetNormilizedFuelLevel();
+        // The funciton GetNormilizedAltitude can return a value above 1f.
+        // For this use case, we only care if the user is still in the atomosphere.
+        // Any number above 1 means they are mass-less.
+        float ultraNormilizedAltitude = Mathf.Clamp(GetNormilizedAltitude(), 0f, 1f);
+        // Start calculating the mass:
+        // As we get closer to leaving the atmosphere, normilizedAltitude will also get closer to 1 (our baseMass value)
+        // Meaning the closer we get to the leaving the atmosphere, our mass will drop considerably.
+        float mass = baseMass - ultraNormilizedAltitude;
+        // We don't want our fuel level to effect our rocket too much, so we're cutting it's effectiveness by 2.
+        mass = mass - normilizedFuelLevel / 10;
+        // We always want the rocket to have a little bit of mass.
+        mass = Mathf.Clamp(mass, 0.2f, 1f);
+        rigidBody.mass = mass;
+    }
+
+    // Gives us a value between 0 and 1.
+    // Where 1 == a full tank && 0 == an empty tank.
+    private float GetNormilizedFuelLevel()
+    {        
+        return fuel / maxFuel;
+    }
+
+    // An effort to normilize the rocket's altitude.
+    // < 1 == they are still in the atmosphere
+    // > 1 == they are outside of the atomosphere
+    private float GetNormilizedAltitude()
+    {        
+        return Mathf.Clamp(rigidBody.transform.position.y / Constants.OUTER_SPACE, 0f, Mathf.Infinity);
     }
 }

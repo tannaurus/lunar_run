@@ -5,6 +5,7 @@ using UnityEngine;
 public class Asteroid : MonoBehaviour {
 
     public GameObject asteroid;
+    public int asteroidCount = 75;
 
 	// Use this for initialization
 	void Start () {
@@ -18,10 +19,10 @@ public class Asteroid : MonoBehaviour {
 
     private void Spawn ()
     {
-        for(int i = 0; i < 50; i++)
+        for(int i = 0; i < asteroidCount; i++)
         {
-            Vector3 position = new Vector3(Random.Range(-30f, 30f), Random.Range(20f, 100f), 0);
-            Instantiate(asteroid, position, Random.rotation); //as GameObject;
+            Vector3 position = new Vector3(Random.Range(-30f, 30f), Random.Range(20f, Constants.THERMOSPHERE), 0);
+            Instantiate(asteroid, position, Random.rotation);
         }
     }
 }
