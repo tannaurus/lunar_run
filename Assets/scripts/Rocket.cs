@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Rocket : MonoBehaviour {
 
     // Public
     public float rotateSpeed = 175f;
     public float thrustForce = 650f;
+    public Slider fuelSlider;
 
     // Serial
     [SerializeField]
@@ -81,8 +83,7 @@ public class Rocket : MonoBehaviour {
         // If they are pressing the space key and the rocket still has fuel, give it some gas.
         if (Input.GetKey(KeyCode.Space) && fuel != 0f)
         {
-            // Decrement fuel
-            fuel--;
+            AdjustFuel();
             // Adjust the thrust force we've calculated by the delta time.
             float adjustedThrustForce = thrustForce * Time.deltaTime;
             // Add the adjusted force to our rocket
@@ -112,11 +113,19 @@ public class Rocket : MonoBehaviour {
         // As we get closer to leaving the atmosphere, normilizedAltitude will also get closer to 1 (our baseMass value)
         // Meaning the closer we get to the leaving the atmosphere, our mass will drop considerably.
         float mass = baseMass - ultraNormilizedAltitude;
-        // We don't want our fuel level to effect our rocket too much, so we're cutting it's effectiveness by 2.
+        // We don't want our fuel level to effect our rocket too much.
         mass = mass - normilizedFuelLevel / 10;
         // We always want the rocket to have a little bit of mass.
         mass = Mathf.Clamp(mass, 0.2f, 1f);
         rigidBody.mass = mass;
+    }
+
+    private void AdjustFuel()
+    {
+        // Decrement fuel
+        fuel--;
+        // The slider expects a normilized value.
+        fuelSlider.value = GetNormilizedFuelLevel();
     }
 
     // Gives us a value between 0 and 1.

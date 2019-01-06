@@ -177,7 +177,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4480503917109120, guid: a9dd97a893c7846d0b1950b9d061e1f3, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -15
+      value: -24.3
       objectReference: {fileID: 0}
     - target: {fileID: 4480503917109120, guid: a9dd97a893c7846d0b1950b9d061e1f3, type: 2}
       propertyPath: m_LocalRotation.x
@@ -239,6 +239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   asteroid: {fileID: 2099363731}
+  asteroidCount: 75
 --- !u!4 &654241918
 Transform:
   m_ObjectHideFlags: 0
@@ -341,22 +342,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9b69001a4166642d985f4bfdcef067ab, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1610540025 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1956997603059866, guid: f7322cc176bb84546b258ad868fc83ac,
-    type: 2}
-  m_PrefabInternal: {fileID: 746428820}
---- !u!114 &1610540026
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1610540025}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f01d29d88278f45458d99e6b5199e920, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1762112148
 Prefab:
   m_ObjectHideFlags: 0
