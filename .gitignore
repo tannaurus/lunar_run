@@ -5,7 +5,7 @@
 [Bb]uilds/
 [Ll]ogs/
 [Aa]ssets/AssetStoreTools*
-Assets/AutoSave/*
+Assets/AutoSave/
 
 # Visual Studio cache directory
 .vs/
