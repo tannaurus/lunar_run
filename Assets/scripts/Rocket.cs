@@ -10,7 +10,10 @@ public class Rocket : MonoBehaviour {
     // Public
     public float rotateSpeed = 175f;
     public float thrustForce = 650f;
+
+    // UI
     public Slider fuelSlider;
+    public Text distanceText;
 
     // Serial
     [SerializeField]
@@ -83,11 +86,14 @@ public class Rocket : MonoBehaviour {
         // If they are pressing the space key and the rocket still has fuel, give it some gas.
         if (Input.GetKey(KeyCode.Space) && fuel != 0f)
         {
-            AdjustFuel();
+            // Decrement fuel.
+            fuel--;
             // Adjust the thrust force we've calculated by the delta time.
             float adjustedThrustForce = thrustForce * Time.deltaTime;
             // Add the adjusted force to our rocket
             rigidBody.AddRelativeForce(Vector3.up * adjustedThrustForce);
+            // Update the UI
+            UpdateUI();
             // If the engine noise isn't playing already, play it.
             // This prevents the layering of audio.
             if (!engine.isPlaying)
@@ -120,12 +126,11 @@ public class Rocket : MonoBehaviour {
         rigidBody.mass = mass;
     }
 
-    private void AdjustFuel()
+    private void UpdateUI()
     {
-        // Decrement fuel
-        fuel--;
         // The slider expects a normilized value.
         fuelSlider.value = GetNormilizedFuelLevel();
+        distanceText.text = "You've traveled " + rigidBody.transform.position.y;
     }
 
     // Gives us a value between 0 and 1.
