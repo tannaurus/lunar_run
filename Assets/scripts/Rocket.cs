@@ -36,7 +36,9 @@ public class Rocket : MonoBehaviour {
     {
         // We have to be constantly adjusting mass in order to get the 
         // correct mass value based on the ever changing altitude of the rocket.
-        AdjustMass();
+        AdjustMass();           
+        // Update the UI
+        UpdateUI();
         if (gameObject)
         {
             // On space press, thrust.
@@ -51,13 +53,25 @@ public class Rocket : MonoBehaviour {
         switch(collision.gameObject.tag) {
             case "Death":
                 SceneManager.LoadScene("Level 1");
-                print("U dead");
                 break;
             default:
                 print("U good");
                 break;
         }
     }
+
+    void OnTriggerEnter(Collider collider) {
+        switch(collider.gameObject.tag)
+        {
+            case "Fuel":
+                Destroy(collider.gameObject);
+                fuel = fuel + 100f;
+                break;
+            default:
+                break;
+        }
+    }
+
 
     private void Rotate()
     {
@@ -92,8 +106,7 @@ public class Rocket : MonoBehaviour {
             float adjustedThrustForce = thrustForce * Time.deltaTime;
             // Add the adjusted force to our rocket
             rigidBody.AddRelativeForce(Vector3.up * adjustedThrustForce);
-            // Update the UI
-            UpdateUI();
+
             // If the engine noise isn't playing already, play it.
             // This prevents the layering of audio.
             if (!engine.isPlaying)
