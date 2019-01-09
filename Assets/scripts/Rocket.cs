@@ -10,6 +10,7 @@ public class Rocket : MonoBehaviour {
     // Public
     public float rotateSpeed = 175f;
     public float thrustForce = 650f;
+    public float fuelBoostForce = 1000f;
 
     // UI
     public Slider fuelSlider;
@@ -18,7 +19,7 @@ public class Rocket : MonoBehaviour {
     // Serial
     [SerializeField]
     private float maxFuel = 1000f;
-    private float fuel = 1000f;
+    private float fuel = 10000f;
     private float baseMass = 1f;
 
     // Private
@@ -61,10 +62,14 @@ public class Rocket : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider collider) {
+        print(collider.gameObject);
         switch(collider.gameObject.tag)
         {
             case "Fuel":
-                Destroy(collider.gameObject);
+                Destroy(collider.gameObject);            
+                // Adjust the thrust force we've calculated by the delta time.
+                float adjustedBoostForce = fuelBoostForce * Time.deltaTime;
+                rigidBody.AddRelativeForce(Vector3.up * adjustedBoostForce);
                 fuel = fuel + 100f;
                 break;
             default:
@@ -133,7 +138,8 @@ public class Rocket : MonoBehaviour {
         // Meaning the closer we get to the leaving the atmosphere, our mass will drop considerably.
         float mass = baseMass - ultraNormilizedAltitude;
         // We don't want our fuel level to effect our rocket too much.
-        mass = mass - normilizedFuelLevel / 10;
+        // TODO - 
+        // mass = mass - normilizedFuelLevel / 10;
         // We always want the rocket to have a little bit of mass.
         mass = Mathf.Clamp(mass, 0.2f, 1f);
         rigidBody.mass = mass;
