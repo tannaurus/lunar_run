@@ -37,12 +37,14 @@ public class Asteroid : MonoBehaviour {
         {
             debugLoopCount++;
             print(debugLoopCount);
-            Vector3 position = new Vector3(Random.Range(-30f, 30f), Random.Range(20f, Constants.THERMOSPHERE), 0);
+            Vector3 position = new Vector3(Random.Range(-50f, 50f), Random.Range(20f, Constants.OUTER_SPACE), 0);
             // If we can spawn here, go for it. 
-            if (CanSpawnHere(10, position))
+            if (CanSpawnHere(15, position))
             {
                 TrackCord(position); 
                 asteroidsSoFar++;
+                float randomScale = Random.Range(3f, 15f);
+                asteroid.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
                 Instantiate(asteroid, position, Random.rotation);
             }
         }
