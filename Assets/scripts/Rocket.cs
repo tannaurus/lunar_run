@@ -11,6 +11,7 @@ public class Rocket : MonoBehaviour {
     public float rotateSpeed = 175f;
     public float thrustForce = 650f;
     public float fuelBoostForce = 1000f;
+    public Rigidbody projectile;
 
     // UI
     public Slider fuelSlider;
@@ -40,12 +41,15 @@ public class Rocket : MonoBehaviour {
         AdjustMass();           
         // Update the UI
         UpdateUI();
+        // If our rocket hasn't blown up, allow the user to control it.
         if (gameObject)
         {
             // On space press, thrust.
             Thrust();
             // On A/D press, rotate.
             Rotate();
+            // On F press, fire.
+            FireProjectile();
         }
 	}
 
@@ -122,6 +126,19 @@ public class Rocket : MonoBehaviour {
         else
         {
             engine.Stop();
+        }
+    }
+
+    private void FireProjectile()
+    {
+        if (Input.GetKey(KeyCode.F))
+        {
+            // Instantiate a new projectile
+            Rigidbody newProjectile = (Rigidbody) Instantiate(projectile, transform.position, transform.rotation);
+            // Set its velocity relative to the rocket's
+            newProjectile.velocity = transform.forward * 10f;
+            // Add some force to get that bb moving
+            newProjectile.AddRelativeForce(Vector3.up * 1500f);
         }
     }
 
