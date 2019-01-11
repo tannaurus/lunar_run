@@ -26,6 +26,7 @@ public class Rocket : MonoBehaviour {
     // Private
     private AudioSource engine;
     private Rigidbody rigidBody;
+    private bool canShoot = true;
 
 	// Use this for initialization
 	void Start () {
@@ -131,7 +132,7 @@ public class Rocket : MonoBehaviour {
 
     private void FireProjectile()
     {
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKey(KeyCode.F) && canShoot)
         {
             // Instantiate a new projectile
             Rigidbody newProjectile = (Rigidbody) Instantiate(projectile, transform.position, transform.rotation);
@@ -139,7 +140,15 @@ public class Rocket : MonoBehaviour {
             newProjectile.velocity = transform.forward * 10f;
             // Add some force to get that bb moving
             newProjectile.AddRelativeForce(Vector3.up * 1500f);
+            canShoot = false;
+            StartCoroutine(ShootDelay());
         }
+    }
+
+    private IEnumerator ShootDelay()
+    {
+        yield return new WaitForSeconds(3);
+        canShoot = true;
     }
 
     private void AdjustMass()
