@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Asteroid : MonoBehaviour {
+public class Spawner : MonoBehaviour
+{
 
     // Public variables
     public GameObject asteroid;
@@ -16,15 +17,17 @@ public class Asteroid : MonoBehaviour {
     private float[] xPositions = new float[150];
     private float[] yPositions = new float[150];
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         SpawnAsteroids();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
 
     void SpawnAsteroids()
@@ -41,7 +44,7 @@ public class Asteroid : MonoBehaviour {
             // If we can spawn here, go for it. 
             if (CanSpawnHere(15, position))
             {
-                TrackCord(position); 
+                TrackCord(position);
                 asteroidsSoFar++;
                 float randomScale = Random.Range(3f, 15f);
                 asteroid.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
