@@ -12,6 +12,7 @@ public class Asteroid : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         scaleRef = gameObject.transform.localScale;
+        print(scaleRef);
         asteroidClone = GetComponent<Rigidbody>();
         BuildPiecePosArr();
     }

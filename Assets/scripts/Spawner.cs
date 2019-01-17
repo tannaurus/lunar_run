@@ -46,7 +46,7 @@ public class Spawner : MonoBehaviour
             {
                 TrackCord(position);
                 asteroidsSoFar++;
-                float randomScale = Random.Range(3f, 15f);
+                float randomScale = Random.Range(1f, 5f);
                 asteroid.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
                 Instantiate(asteroid, position, Random.rotation);
             }
