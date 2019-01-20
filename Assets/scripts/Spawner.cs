@@ -55,17 +55,6 @@ public class Spawner : MonoBehaviour
         print(asteroidsSoFar);
     }
 
-    // To-do
-    //void GetAsteroidCluster()
-    //{
-    //    // Generate a random size of our cluster
-    //    int astCount = Random.Range(5, 10);
-    //    for (int i = 0; i < astCount; i++)
-    //    {
-
-    //    }
-    //}
-
     void TrackCord(Vector3 cord)
     {
         xPositions[asteroidsSoFar] = cord.x;
