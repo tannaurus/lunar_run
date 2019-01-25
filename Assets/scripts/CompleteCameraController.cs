@@ -15,7 +15,10 @@ public class CompleteCameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {
-        transform.position = player.transform.position + offset;
+        Vector3 camPosition = player.transform.position + offset;
+        // Maintain the camera's position at X
+        camPosition.x = 0;
+        transform.position = camPosition;
 	}
 }
 
