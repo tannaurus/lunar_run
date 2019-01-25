@@ -7,6 +7,7 @@ TagManager:
   - Death
   - Fuel
   - Projectile
+  - Black Hole
   layers:
   - Default
   - TransparentFX

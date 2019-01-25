@@ -20,7 +20,7 @@ public class Spawner : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        SpawnAsteroids();
+        //SpawnAsteroids();
     }
 
     // Update is called once per frame
